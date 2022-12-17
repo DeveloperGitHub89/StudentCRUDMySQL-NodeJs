@@ -55,6 +55,29 @@ app.get('/students/:id',(request,response)=>{
         }
     })
 });
+
+app.delete('/students/:id',(request,response)=>{
+    var deleteQry="DELETE FROM student WHERE id="+request.params.id;
+    conn.query(deleteQry,(error,result)=>{
+        if (error) {
+            response.status(500).send({message:'Error in deleting students'});
+        } else {
+            response.status(200).send({message:'Successfully deleted student'});
+        }
+    })
+});
+
+app.get('/students/name/:pattern',(request,response)=>{
+    var fetchQry=`SELECT * FROM student WHERE name like '${request.params.pattern}%'`;
+    conn.query(fetchQry,(error,result)=>{
+        if (error) {
+            response.status(500).send({message:'Error in fetching students'});
+        } else {
+            response.status(200).send(result);
+        }
+    });
+});
+
 app.listen(9800,()=>{
     console.log('listening on 9800');
 });
